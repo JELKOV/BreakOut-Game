@@ -30,24 +30,26 @@ class Ball:
             self.speed_y = -self.speed_y
 
     def check_collision(self, paddle, bricks):
-        # 패들과 충돌 처리
+        """공과 패들 및 벽돌의 충돌 처리"""
+        # 패들과 충돌
         if (
-            self.y + self.radius >= paddle.y and
-            paddle.x <= self.x <= paddle.x + paddle.width
+                self.y + self.radius >= paddle.y and
+                paddle.x <= self.x <= paddle.x + paddle.width
         ):
             self.y = paddle.y - self.radius
             self.speed_y = -abs(self.speed_y)
 
-        # 벽돌과 충돌 처리
+        # 벽돌과 충돌
         for brick in bricks:
             if not brick.is_destroyed and (
-                brick.x <= self.x <= brick.x + brick.width and
-                brick.y <= self.y <= brick.y + brick.height
+                    brick.x <= self.x <= brick.x + brick.width and
+                    brick.y <= self.y <= brick.y + brick.height
             ):
                 brick.hit()
                 self.speed_y = -self.speed_y
-                return True
-        return False
+                return brick  # 충돌한 벽돌 반환
+        return None  # 충돌한 벽돌이 없는 경우
+
 
     def draw(self, screen):
         # 화면에 공 그리기
